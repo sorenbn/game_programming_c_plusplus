@@ -163,6 +163,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\Game.cpp" />
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -174,6 +175,9 @@
     <Text Include="vendor\SDL2\LICENSE.txt" />
     <Text Include="vendor\SDL2\README-SDL.txt" />
     <Text Include="vendor\SDL2\WhatsNew.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\Game.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

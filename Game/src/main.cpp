@@ -1,27 +1,15 @@
-#include <SDL.h>
-#include <iostream>
+#include "Game.h";
 
 int main(int argc, char* argv[])
 {
-    if (SDL_Init(SDL_INIT_VIDEO) != 0)
+    Game game;
+    bool success = game.initialize();
+
+    if (success)
     {
-        std::cout << SDL_GetError() << std::endl;
-        return 1;
+        game.run_loop();
     }
 
-    SDL_Window* window = SDL_CreateWindow(
-        "SDL Test",
-        SDL_WINDOWPOS_CENTERED,
-        SDL_WINDOWPOS_CENTERED,
-        800,
-        600,
-        0
-    );
-
-    SDL_Delay(3000);
-
-    SDL_DestroyWindow(window);
-    SDL_Quit();
-
+    game.shutdown();
     return 0;
 }
