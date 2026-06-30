@@ -14,8 +14,11 @@ public:
 private:
 	void process_input();
 	void update_game();
-	void generate_output();
+	void render();
 
-	SDL_Window* window;
+	SDL_Window *window;
+	SDL_Renderer *renderer;
 	bool is_running;
+
+	const int WALL_THICKNESS = 15;
 };
