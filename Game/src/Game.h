@@ -2,6 +2,12 @@
 
 #include <SDL.h>
 
+struct Vector2
+{
+	float x;
+	float y;
+};
+
 class Game
 {
 public:
@@ -16,9 +22,18 @@ private:
 	void update_game();
 	void render();
 
+	// engine state
 	SDL_Window *window;
 	SDL_Renderer *renderer;
+	Uint32 tick_count;
 	bool is_running;
 
-	const int WALL_THICKNESS = 15;
+	// actual game state
+	const int WINDOW_SIZE_X = 1024;
+	const int WINDOW_SIZE_Y = 768;
+	const int THICKNESS = 15;
+	const int PADDLE_HEIGHT = 100;
+
+	Vector2 paddle_pos;
+	Vector2 ball_pos;
 };

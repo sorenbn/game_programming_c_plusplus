@@ -4,6 +4,7 @@ Game::Game()
 	: is_running(false),
 	  window(nullptr)
 {
+	tick_count = 0;
 }
 
 bool Game::initialize()
@@ -17,8 +18,8 @@ bool Game::initialize()
 	window = SDL_CreateWindow("Game Programming in C++ (Chapter 1)",
 							  SDL_WINDOWPOS_CENTERED, // window pos x
 							  SDL_WINDOWPOS_CENTERED, // window pos y
-							  1024,					  // window width
-							  768,					  // window height
+							  WINDOW_SIZE_X,		  // window width
+							  WINDOW_SIZE_Y,		  // window height
 							  0);					  // window flags
 
 	if (!window)
@@ -34,6 +35,9 @@ bool Game::initialize()
 		SDL_Log("Failed to create renderer: %s", SDL_GetError());
 		return false;
 	}
+
+	ball_pos = {WINDOW_SIZE_X / 2.0f, WINDOW_SIZE_Y / 2.0f};
+	paddle_pos = {100.0f, WINDOW_SIZE_Y / 2.0f};
 
 	is_running = true;
 	return true;
@@ -80,23 +84,68 @@ void Game::process_input()
 
 void Game::update_game()
 {
+	// calculate current dt
+	float delta_time = (SDL_GetTicks() - tick_count) / 1000.0f;
+
+	// store tick count for the next frame
+	tick_count = SDL_GetTicks();
 }
 
 void Game::render()
 {
 	// set draw color for the state machine (like immediate mode)
-	SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
+	SDL_SetRenderDrawColor(renderer, 100, 149, 237, 255);
 	// clear the backbuffer with whatecer the current draw color is (set above)
 	SDL_RenderClear(renderer);
 
-	// draw wall
+	// walls
 	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-	SDL_Rect wall{
+	SDL_Rect wall_top{
 		0,
 		0,
-		1024,
-		WALL_THICKNESS};
-	SDL_RenderFillRect(renderer, &wall);
+		WINDOW_SIZE_X,
+		THICKNESS};
+	SDL_RenderFillRect(renderer, &wall_top);
+
+	SDL_Rect wall_bottom{
+		0,
+		WINDOW_SIZE_Y - THICKNESS,
+		WINDOW_SIZE_X,
+		THICKNESS};
+	SDL_RenderFillRect(renderer, &wall_bottom);
+
+	SDL_Rect wall_left{
+		0,
+		0,
+		THICKNESS,
+		WINDOW_SIZE_Y};
+	SDL_RenderFillRect(renderer, &wall_left);
+
+	SDL_Rect wall_right{
+		WINDOW_SIZE_X - THICKNESS,
+		0,
+		THICKNESS,
+		WINDOW_SIZE_Y};
+	SDL_RenderFillRect(renderer, &wall_right);
+
+	// balls
+	SDL_Rect ball_rect{
+		static_cast<int>(ball_pos.x - THICKNESS / 2),
+		static_cast<int>(ball_pos.y - THICKNESS / 2),
+		THICKNESS,
+		THICKNESS};
+
+	SDL_RenderFillRect(renderer, &ball_rect);
+
+	// paddle
+	SDL_Rect paddle_rect{
+		static_cast<int>(paddle_pos.x - THICKNESS / 2),
+		static_cast<int>(paddle_pos.y - PADDLE_HEIGHT / 2),
+		THICKNESS,
+		PADDLE_HEIGHT,
+	};
+
+	SDL_RenderFillRect(renderer, &paddle_rect);
 
 	// swap buffers (and present it to the screen)
 	SDL_RenderPresent(renderer);
