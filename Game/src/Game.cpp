@@ -37,6 +37,7 @@ bool Game::initialize()
 	}
 
 	ball_pos = {WINDOW_SIZE_X / 2.0f, WINDOW_SIZE_Y / 2.0f};
+	ball_velocity = {-200.0f, 235.0f};
 	paddle_pos = {100.0f, WINDOW_SIZE_Y / 2.0f};
 
 	is_running = true;
@@ -94,6 +95,8 @@ void Game::process_input()
 
 void Game::update_game()
 {
+	/* ###### ENGINE LOGIC ###### */
+
 	// wait until 16ms has passed since last frame
 	// it's essentially doing 'while(SDL_GetTicks() < tick_count + 16)' but with some overflow protection
 	while (!SDL_TICKS_PASSED(SDL_GetTicks(), tick_count + 16))
@@ -111,7 +114,34 @@ void Game::update_game()
 	// store tick count for the next frame
 	tick_count = SDL_GetTicks();
 
-	// game logic
+	/* ###### GAME LOGIC ###### */
+	ball_pos.x += ball_velocity.x * delta_time;
+	ball_pos.y += ball_velocity.y * delta_time;
+
+	// wall collision
+	if ((ball_pos.y - (THICKNESS / 2) < THICKNESS && ball_velocity.y < 0) || (ball_pos.y + (THICKNESS / 2) > WINDOW_SIZE_Y - THICKNESS && ball_velocity.y > 0))
+	{
+		ball_velocity.y *= -1;
+	}
+	else if ((ball_pos.x - (THICKNESS / 2) < THICKNESS && ball_velocity.x < 0) || (ball_pos.x + (THICKNESS / 2) > WINDOW_SIZE_X - THICKNESS && ball_velocity.x > 0))
+	{
+		ball_velocity.x *= -1;
+	}
+
+	// ball and paddle collision
+	float diff = std::abs(ball_pos.y - paddle_pos.y);
+
+	if (diff <= PADDLE_HEIGHT / 2.0f &&
+		ball_pos.x - (THICKNESS / 2) <= paddle_pos.x + (THICKNESS / 2) &&
+		ball_pos.x + (THICKNESS / 2) >= paddle_pos.x &&
+		ball_velocity.x < 0)
+	{
+		ball_velocity.x *= -1;
+
+		// push the ball outside the paddle
+		ball_pos.x = paddle_pos.x + THICKNESS;
+	}
+
 	if (paddle_direction != 0)
 	{
 		paddle_pos.y += paddle_direction * PADDLE_SPEED * delta_time;

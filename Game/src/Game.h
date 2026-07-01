@@ -36,5 +36,6 @@ private:
 	const float PADDLE_SPEED = 300.0f;
 	Vector2 paddle_pos;
 	Vector2 ball_pos;
+	Vector2 ball_velocity;
 	int paddle_direction;
 };
