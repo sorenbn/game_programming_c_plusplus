@@ -80,15 +80,51 @@ void Game::process_input()
 	{
 		is_running = false;
 	}
+
+	paddle_direction = 0;
+	if (keyboard_state[SDL_SCANCODE_W])
+	{
+		paddle_direction -= 1;
+	}
+	if (keyboard_state[SDL_SCANCODE_S])
+	{
+		paddle_direction += 1;
+	}
 }
 
 void Game::update_game()
 {
-	// calculate current dt
+	// wait until 16ms has passed since last frame
+	// it's essentially doing 'while(SDL_GetTicks() < tick_count + 16)' but with some overflow protection
+	while (!SDL_TICKS_PASSED(SDL_GetTicks(), tick_count + 16))
+		;
+
+	// calculate current dt in seconds
 	float delta_time = (SDL_GetTicks() - tick_count) / 1000.0f;
+
+	// force delta_tima cap if it should exceed some large threshold (like when debugging)
+	if (delta_time > 0.05f)
+	{
+		delta_time = 0.05f;
+	}
 
 	// store tick count for the next frame
 	tick_count = SDL_GetTicks();
+
+	// game logic
+	if (paddle_direction != 0)
+	{
+		paddle_pos.y += paddle_direction * PADDLE_SPEED * delta_time;
+
+		if (paddle_pos.y < (PADDLE_HEIGHT / 2) + THICKNESS)
+		{
+			paddle_pos.y = (PADDLE_HEIGHT / 2) + THICKNESS;
+		}
+		else if (paddle_pos.y > WINDOW_SIZE_Y - (PADDLE_HEIGHT / 2) - THICKNESS)
+		{
+			paddle_pos.y = WINDOW_SIZE_Y - (PADDLE_HEIGHT / 2) - THICKNESS;
+		}
+	}
 }
 
 void Game::render()
