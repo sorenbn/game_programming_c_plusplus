@@ -1,4 +1,4 @@
-#include "Game.h"
+#include "game.h"
 
 Game::Game() : is_running(false), window(nullptr), renderer(nullptr)
 {
