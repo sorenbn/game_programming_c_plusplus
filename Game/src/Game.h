@@ -29,13 +29,4 @@ private:
 	bool is_running;
 	const int WINDOW_SIZE_X = 1024;
 	const int WINDOW_SIZE_Y = 768;
-
-	// actual game state
-	const int THICKNESS = 15;
-	const int PADDLE_HEIGHT = 100;
-	const float PADDLE_SPEED = 300.0f;
-	Vector2 paddle_pos;
-	Vector2 ball_pos;
-	Vector2 ball_velocity;
-	int paddle_direction;
 };
