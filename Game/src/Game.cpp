@@ -1,4 +1,5 @@
 #include "Game.h"
+#include <cmath>
 
 Game::Game()
 	: is_running(false),
