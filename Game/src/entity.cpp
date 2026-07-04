@@ -48,10 +48,26 @@ void Entity::update_entity(float delta_time)
 
 void Entity::add_component(Component* component)
 {
+	int order = component->update_order;
+	auto iterator = components.begin();
 
+	for (; iterator != components.end(); ++iterator)
+	{
+		if (order < (*iterator)->update_order)
+		{
+			break;
+		}
+	}
+
+	components.insert(iterator, component);
 }
 
 void Entity::remove_component(Component* component)
 {
+	auto iterator = std::find(components.begin(), components.end(), component);
 
+	if (iterator != components.end())
+	{
+		components.erase(iterator);
+	}
 }
