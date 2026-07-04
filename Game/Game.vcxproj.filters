@@ -4,6 +4,7 @@
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\game.cpp" />
     <ClCompile Include="src\entity.cpp" />
+    <ClCompile Include="src\component.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="vendor\SDL2\.git-hash" />
@@ -19,5 +20,6 @@
     <ClInclude Include="src\game.h" />
     <ClInclude Include="src\entity.h" />
     <ClInclude Include="src\vector2.h" />
+    <ClInclude Include="src\component.h" />
   </ItemGroup>
 </Project>

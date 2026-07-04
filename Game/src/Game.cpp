@@ -1,5 +1,7 @@
 #include "game.h"
 
+bool updating_entities = false;
+
 Game::Game() : is_running(false), window(nullptr), renderer(nullptr)
 {
 	tick_count = 0;
@@ -98,7 +100,35 @@ void Game::update_game()
 	// store tick count for the next frame
 	tick_count = SDL_GetTicks();
 
-	/* ###### GAME LOGIC ###### */
+	// update
+	updating_entities = true;
+	for (Entity* entity : entities)
+	{
+		entity->update(delta_time);
+	}
+	updating_entities = false;
+
+	// add potential newly created entities to the list of entities
+	for (Entity* pending_entity : pending_entities)
+	{
+		entities.emplace_back(pending_entity);
+	}
+	pending_entities.clear();
+
+	// cleanup destroyed entities
+	std::vector<Entity*> destroyed_entities;
+	for (Entity* entity : entities)
+	{
+		if (entity->state == Entity::DESTROYED)
+		{
+			destroyed_entities.emplace_back(entity);
+		}
+	}
+
+	for (Entity* destroyed_entity : destroyed_entities)
+	{
+		delete destroyed_entity;
+	}
 }
 
 void Game::render()
@@ -110,4 +140,21 @@ void Game::render()
 
 	// swap buffers (and present it to the screen)
 	SDL_RenderPresent(renderer);
+}
+
+void Game::add_entity(Entity* entity)
+{
+	if (updating_entities)
+	{
+		pending_entities.emplace_back(entity);
+	}
+	else
+	{
+		entities.emplace_back(entity);
+	}
+}
+
+void Game::remove_entity(Entity* entity)
+{
+	entity->state = Entity::DESTROYED;
 }

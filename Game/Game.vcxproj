@@ -163,6 +163,7 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\component.cpp" />
     <ClCompile Include="src\entity.cpp" />
     <ClCompile Include="src\game.cpp" />
     <ClCompile Include="src\main.cpp" />
@@ -178,6 +179,7 @@
     <Text Include="vendor\SDL2\WhatsNew.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\component.h" />
     <ClInclude Include="src\entity.h" />
     <ClInclude Include="src\game.h" />
     <ClInclude Include="src\vector2.h" />
