@@ -1,6 +1,11 @@
 #include "game.h"
+#include <SDL_image.h>
 
-bool updating_entities = false;
+static bool updating_entities = false;
+
+// testing
+static SDL_Surface* sprite_surface;
+static SDL_Texture* sprite_texture;
 
 Game::Game() : is_running(false), window(nullptr), renderer(nullptr)
 {
@@ -12,6 +17,12 @@ bool Game::initialize()
 	if (SDL_Init(SDL_INIT_VIDEO) != 0)
 	{
 		SDL_Log("Unable to initialize SDL: %s", SDL_GetError());
+		return false;
+	}
+
+	if (IMG_Init(IMG_INIT_PNG) == 0)
+	{
+		SDL_Log("Unable to initialize SDL_Image: %s", SDL_GetError());
 		return false;
 	}
 
@@ -36,6 +47,11 @@ bool Game::initialize()
 		return false;
 	}
 
+	// texture in-memory, essentially
+	sprite_surface = IMG_Load("assets/sprites/test.png");
+	// texture on the GPU, essentially
+	sprite_texture = SDL_CreateTextureFromSurface(renderer, sprite_surface);
+
 	is_running = true;
 	return true;
 }
@@ -52,6 +68,9 @@ void Game::run_loop()
 
 void Game::shutdown()
 {
+	// test
+	SDL_DestroyTexture(sprite_texture);
+
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
 	SDL_Quit();
@@ -138,6 +157,16 @@ void Game::render()
 	// clear the backbuffer with whatecer the current draw color is (set above)
 	SDL_RenderClear(renderer);
 
+	// test
+	SDL_Rect rect{
+		(WINDOW_SIZE_X / 2) - 128,
+		(WINDOW_SIZE_Y / 2) - 128,
+		256,
+		256,
+	};
+
+	SDL_RenderCopy(renderer, sprite_texture, NULL, &rect);
+
 	// swap buffers (and present it to the screen)
 	SDL_RenderPresent(renderer);
 }
@@ -157,4 +186,4 @@ void Game::add_entity(Entity* entity)
 void Game::remove_entity(Entity* entity)
 {
 	entity->state = Entity::DESTROYED;
-}
+} 

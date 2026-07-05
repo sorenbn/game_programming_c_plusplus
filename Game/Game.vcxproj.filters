@@ -22,4 +22,7 @@
     <ClInclude Include="src\vector2.h" />
     <ClInclude Include="src\component.h" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="assets\sprites\test.png" />
+  </ItemGroup>
 </Project>

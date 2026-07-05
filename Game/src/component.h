@@ -11,4 +11,3 @@ public:
 	class Entity* entity;
 	int update_order;
 };
-
