@@ -3,6 +3,7 @@
 #include <vector>
 #include <SDL.h>
 #include "entity.h"
+#include "sprite_component.h"
 
 class Game
 {
@@ -19,9 +20,13 @@ public:
 	void add_entity(Entity* entity);
 	void remove_entity(Entity* entity);
 
+	SDL_Texture* load_texture(const char* file_name);
+
+	void add_sprite(SpriteComponent* sprite);
+
 	// engine state
-	const int WINDOW_SIZE_X = 1024;
-	const int WINDOW_SIZE_Y = 768;
+	const int WINDOW_SIZE_X = 1280;
+	const int WINDOW_SIZE_Y = 720;
 	bool is_running;
 	SDL_Window *window;
 	SDL_Renderer *renderer;

@@ -186,4 +186,9 @@ void Game::add_entity(Entity* entity)
 void Game::remove_entity(Entity* entity)
 {
 	entity->state = Entity::DESTROYED;
-} 
+}
+
+SDL_Texture* Game::load_texture(const char* file_name)
+{
+
+}
