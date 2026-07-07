@@ -2,7 +2,7 @@
 #include "component.h"
 #include "game.h"
 #include "vector2.h"
-#include "math.h"
+#include "animated_sprite_component.h"
 
 Entity::Entity(Game* _game)
 	: state(ENABLED),
@@ -12,6 +12,23 @@ Entity::Entity(Game* _game)
 	game(_game)
 {
 	game->add_entity(this);
+
+	// test code
+	position = { 512, 512};
+
+	AnimatedSpriteComponent* animation = new AnimatedSpriteComponent(this);
+	animation->animation_fps = 6;
+	std::vector<SDL_Texture*> animation_textures = {
+		game->load_texture("assets/sprites/k1.png"),
+		game->load_texture("assets/sprites/k2.png"),
+		game->load_texture("assets/sprites/k3.png"),
+		game->load_texture("assets/sprites/k4.png"),
+		game->load_texture("assets/sprites/k5.png"),
+		game->load_texture("assets/sprites/k6.png"),
+		game->load_texture("assets/sprites/k7.png"),
+		game->load_texture("assets/sprites/k8.png"),
+	};
+	animation->set_animation_textures(animation_textures);
 }
 
 Entity::~Entity()
@@ -44,8 +61,6 @@ void Entity::update_components(float delta_time)
 
 void Entity::update_entity(float delta_time)
 {
-	// test
-	rotation += (15 * DEG_TO_RAD) * delta_time;
 }
 
 void Entity::add_component(Component* component)

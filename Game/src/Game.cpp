@@ -50,12 +50,6 @@ bool Game::initialize()
 
 	// test
 	player = new Entity(this);
-	player->position = { WINDOW_SIZE_X / 2.0f, WINDOW_SIZE_Y / 2.0f };
-	player->rotation = 90 * DEG_TO_RAD;
-	player_texture = load_texture("assets/sprites/test.png");
-	player_sprite = new SpriteComponent(player, 0);
-	player_sprite->set_texture(player_texture);
-	player->add_component(player_sprite);
 	add_entity(player);
 
 	is_running = true;

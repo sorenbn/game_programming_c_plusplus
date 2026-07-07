@@ -6,6 +6,7 @@
     <ClCompile Include="src\entity.cpp" />
     <ClCompile Include="src\component.cpp" />
     <ClCompile Include="src\sprite_component.cpp" />
+    <ClCompile Include="src\animated_sprite_component.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="vendor\SDL2\.git-hash" />
@@ -24,8 +25,17 @@
     <ClInclude Include="src\component.h" />
     <ClInclude Include="src\sprite_component.h" />
     <ClInclude Include="src\math.h" />
+    <ClInclude Include="src\animated_sprite_component.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="assets\sprites\test.png" />
+    <Image Include="assets\sprites\k1.png" />
+    <Image Include="assets\sprites\k2.png" />
+    <Image Include="assets\sprites\k3.png" />
+    <Image Include="assets\sprites\k4.png" />
+    <Image Include="assets\sprites\k5.png" />
+    <Image Include="assets\sprites\k6.png" />
+    <Image Include="assets\sprites\k7.png" />
+    <Image Include="assets\sprites\k8.png" />
   </ItemGroup>
 </Project>
