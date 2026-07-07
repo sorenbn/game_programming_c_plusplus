@@ -1,11 +1,12 @@
 #include "game.h"
 #include <SDL_image.h>
+#include "math.h"
 
 static bool updating_entities = false;
 
-// testing
-static SDL_Surface* sprite_surface;
-static SDL_Texture* sprite_texture;
+Entity* player;
+SDL_Texture* player_texture;
+SpriteComponent* player_sprite;
 
 Game::Game() : is_running(false), window(nullptr), renderer(nullptr)
 {
@@ -27,11 +28,11 @@ bool Game::initialize()
 	}
 
 	window = SDL_CreateWindow("Game Programming in C++ (Chapter 1)",
-							  SDL_WINDOWPOS_CENTERED, // window pos x
-							  SDL_WINDOWPOS_CENTERED, // window pos y
-							  WINDOW_SIZE_X,		  // window width
-							  WINDOW_SIZE_Y,		  // window height
-							  0);					  // window flags
+		SDL_WINDOWPOS_CENTERED, // window pos x
+		SDL_WINDOWPOS_CENTERED, // window pos y
+		WINDOW_SIZE_X,		  // window width
+		WINDOW_SIZE_Y,		  // window height
+		0);					  // window flags
 
 	if (!window)
 	{
@@ -47,10 +48,15 @@ bool Game::initialize()
 		return false;
 	}
 
-	// texture in-memory, essentially
-	sprite_surface = IMG_Load("assets/sprites/test.png");
-	// texture on the GPU, essentially
-	sprite_texture = SDL_CreateTextureFromSurface(renderer, sprite_surface);
+	// test
+	player = new Entity(this);
+	player->position = { WINDOW_SIZE_X / 2.0f, WINDOW_SIZE_Y / 2.0f };
+	player->rotation = 90 * DEG_TO_RAD;
+	player_texture = load_texture("assets/sprites/test.png");
+	player_sprite = new SpriteComponent(player, 0);
+	player_sprite->set_texture(player_texture);
+	player->add_component(player_sprite);
+	add_entity(player);
 
 	is_running = true;
 	return true;
@@ -68,9 +74,6 @@ void Game::run_loop()
 
 void Game::shutdown()
 {
-	// test
-	SDL_DestroyTexture(sprite_texture);
-
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
 	SDL_Quit();
@@ -90,7 +93,7 @@ void Game::process_input()
 		}
 	}
 
-	const Uint8 *keyboard_state = SDL_GetKeyboardState(NULL);
+	const Uint8* keyboard_state = SDL_GetKeyboardState(NULL);
 
 	if (keyboard_state[SDL_SCANCODE_ESCAPE])
 	{
@@ -165,7 +168,10 @@ void Game::render()
 		256,
 	};
 
-	SDL_RenderCopy(renderer, sprite_texture, NULL, &rect);
+	for (SpriteComponent* sprite : sprites)
+	{
+		sprite->draw(renderer);
+	}
 
 	// swap buffers (and present it to the screen)
 	SDL_RenderPresent(renderer);
@@ -188,7 +194,48 @@ void Game::remove_entity(Entity* entity)
 	entity->state = Entity::DESTROYED;
 }
 
+void Game::add_sprite(SpriteComponent* sprite_component)
+{
+	int draw_order = sprite_component->draw_order;
+
+	auto iterator = sprites.begin();
+
+	for (; iterator != sprites.end(); ++iterator)
+	{
+		if (draw_order < (*iterator)->draw_order)
+		{
+			break;
+		}
+	}
+
+	sprites.insert(iterator, sprite_component);
+}
+
+void Game::remove_sprite(SpriteComponent* sprite_component)
+{
+	auto iterator = std::find(sprites.begin(), sprites.end(), sprite_component);
+	sprites.erase(iterator);
+}
+
+// todo: move somewhere else?
 SDL_Texture* Game::load_texture(const char* file_name)
 {
+	SDL_Surface* surface = IMG_Load(file_name);
 
+	if (!surface)
+	{
+		SDL_Log("Failed to load texture file: %s", file_name);
+		return nullptr;
+	}
+
+	SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
+	SDL_FreeSurface(surface);
+
+	if (!texture)
+	{
+		SDL_Log("Failed to convert surface to texture for %s", file_name);
+		return nullptr;
+	}
+
+	return texture;
 }

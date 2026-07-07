@@ -89,7 +89,10 @@
       <EnableSegmentHeap>true</EnableSegmentHeap>
     </Manifest>
     <PostBuildEvent>
-      <Command>copy /Y "$(ProjectDir)vendor\SDL2\lib\x64\SDL2.dll" "$(OutDir)"</Command>
+      <Command>copy /Y "$(ProjectDir)vendor\SDL2\lib\x64\SDL2.dll" "$(OutDir)"
+copy /Y "$(ProjectDir)vendor\SDL2_image\lib\x64\SDL2_image.dll" "$(OutDir)"
+
+xcopy /E /I /Y "$(ProjectDir)assets" "$(OutDir)assets"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -113,7 +116,10 @@
       <EnableSegmentHeap>true</EnableSegmentHeap>
     </Manifest>
     <PostBuildEvent>
-      <Command>copy /Y "$(ProjectDir)vendor\SDL2\lib\x64\SDL2.dll" "$(OutDir)"</Command>
+      <Command>copy /Y "$(ProjectDir)vendor\SDL2\lib\x64\SDL2.dll" "$(OutDir)"
+copy /Y "$(ProjectDir)vendor\SDL2_image\lib\x64\SDL2_image.dll" "$(OutDir)"
+
+xcopy /E /I /Y "$(ProjectDir)assets" "$(OutDir)assets"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -135,7 +141,10 @@
       <EnableSegmentHeap>true</EnableSegmentHeap>
     </Manifest>
     <PostBuildEvent>
-      <Command>copy /Y "$(ProjectDir)vendor\SDL2\lib\x64\SDL2.dll" "$(OutDir)"</Command>
+      <Command>copy /Y "$(ProjectDir)vendor\SDL2\lib\x64\SDL2.dll" "$(OutDir)"
+copy /Y "$(ProjectDir)vendor\SDL2_image\lib\x64\SDL2_image.dll" "$(OutDir)"
+
+xcopy /E /I /Y "$(ProjectDir)assets" "$(OutDir)assets"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -159,7 +168,10 @@
       <EnableSegmentHeap>true</EnableSegmentHeap>
     </Manifest>
     <PostBuildEvent>
-      <Command>copy /Y "$(ProjectDir)vendor\SDL2\lib\x64\SDL2.dll" "$(OutDir)"</Command>
+      <Command>copy /Y "$(ProjectDir)vendor\SDL2\lib\x64\SDL2.dll" "$(OutDir)"
+copy /Y "$(ProjectDir)vendor\SDL2_image\lib\x64\SDL2_image.dll" "$(OutDir)"
+
+xcopy /E /I /Y "$(ProjectDir)assets" "$(OutDir)assets"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -180,6 +192,7 @@
     <Text Include="vendor\SDL2\WhatsNew.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\math.h" />
     <ClInclude Include="src\sprite_component.h" />
     <ClInclude Include="src\component.h" />
     <ClInclude Include="src\entity.h" />

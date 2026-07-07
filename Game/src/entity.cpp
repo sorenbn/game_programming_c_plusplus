@@ -2,6 +2,7 @@
 #include "component.h"
 #include "game.h"
 #include "vector2.h"
+#include "math.h"
 
 Entity::Entity(Game* _game)
 	: state(ENABLED),
@@ -43,7 +44,8 @@ void Entity::update_components(float delta_time)
 
 void Entity::update_entity(float delta_time)
 {
-
+	// test
+	rotation += (15 * DEG_TO_RAD) * delta_time;
 }
 
 void Entity::add_component(Component* component)

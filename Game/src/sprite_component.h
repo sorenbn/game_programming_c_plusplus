@@ -1,12 +1,13 @@
 #pragma once
 
 #include "component.h"
+#include "entity.h"
 #include <SDL.h>
 
 class SpriteComponent : public Component
 {
 public:
-	SpriteComponent(class Entity* _entity, int draw_order);
+	SpriteComponent(Entity* _entity, int draw_order);
 	~SpriteComponent();
 
 	virtual void draw(SDL_Renderer* renderer);

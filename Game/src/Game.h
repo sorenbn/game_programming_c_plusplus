@@ -23,6 +23,7 @@ public:
 	SDL_Texture* load_texture(const char* file_name);
 
 	void add_sprite(SpriteComponent* sprite);
+	void remove_sprite(SpriteComponent* sprite);
 
 	// engine state
 	const int WINDOW_SIZE_X = 1280;
@@ -35,4 +36,6 @@ public:
 	std::vector<Entity*> entities;
 	std::vector<Entity*> pending_entities;
 	std::vector<Entity*> destroyed_entities;
+
+	std::vector<SpriteComponent*> sprites;
 };
